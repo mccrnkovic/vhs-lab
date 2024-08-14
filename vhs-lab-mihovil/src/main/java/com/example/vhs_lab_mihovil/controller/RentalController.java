@@ -25,9 +25,9 @@ public class RentalController {
     }
 
     @GetMapping("getAll")
-    public List<RentalDto> getAllRentals() {
+    public ResponseEntity getAllRentals() {
         List<RentalDto> result = rentalService.getAllRentals();
-        return result;
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @PostMapping("insertRental")
@@ -36,6 +36,19 @@ public class RentalController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PutMapping("updateRental")
+    public ResponseEntity updateRental(@Valid @RequestBody RentalDto rentalDto) {
+        Integer updatedId = rentalService.updateRental(rentalDto);
+        return new ResponseEntity(HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("deleteRental")
+    public ResponseEntity deleteRental(@RequestParam Integer rentalId) {
+        rentalService.deleteRental(rentalId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+
     @ExceptionHandler
     public ResponseEntity handle(MethodArgumentNotValidException e) {
         log.warn(e.getMessage());
@@ -43,7 +56,13 @@ public class RentalController {
         for (FieldError fieldError : e.getFieldErrors()) {
             validationMessage.append(fieldError.getDefaultMessage()).append("\n");
         }
-        return new ResponseEntity(validationMessage.toString(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(validationMessage.toString(), HttpStatus.NO_CONTENT);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity handle(Exception e) {
+        log.warn(e.getMessage());
+        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 }

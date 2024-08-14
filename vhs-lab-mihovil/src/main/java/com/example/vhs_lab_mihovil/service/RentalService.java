@@ -32,4 +32,23 @@ public class RentalService {
         rentalRepository.save(rental);
         return rental.getId();
     }
+
+    public Integer updateRental(RentalDto rentalDto) {
+        if (rentalDto.getId() == null) {
+            throw new IllegalStateException("Rental id must not be null");
+        } else {
+            Rental rental = RentalMapper.MAPPER.toModel(rentalDto);
+            rentalRepository.save(rental);
+            return rental.getId();
+        }
+    }
+
+    public boolean deleteRental(Integer rentalId) {
+        if (rentalId == null) {
+            throw new IllegalStateException("Rental id must not be null");
+        } else {
+            rentalRepository.deleteById(rentalId);
+            return true;
+        }
+    }
 }
