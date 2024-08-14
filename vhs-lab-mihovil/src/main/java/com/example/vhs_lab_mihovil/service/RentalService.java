@@ -26,4 +26,10 @@ public class RentalService {
                 .collect(Collectors.toList());
         return rentalDtos;
     }
+
+    public Integer insertRental(RentalDto rentalDto) {
+        Rental rental = RentalMapper.MAPPER.toModel(rentalDto);
+        rentalRepository.save(rental);
+        return rental.getId();
+    }
 }
