@@ -19,7 +19,7 @@ public class VhsController {
         this.vhsService = vhsService;
     }
 
-    @GetMapping("getAllVhs")
+    @GetMapping("getAll")
     public List<VhsDto> getAllVhs() {
         List<VhsDto> result = vhsService.getAllVhs();
         return result;
