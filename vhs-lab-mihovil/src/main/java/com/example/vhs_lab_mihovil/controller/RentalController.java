@@ -53,28 +53,4 @@ public class RentalController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-
-    @ExceptionHandler
-    public ResponseEntity handle(MethodArgumentNotValidException e) {
-        log.warn(e.getMessage());
-        StringBuilder validationMessage = new StringBuilder();
-        for (FieldError fieldError : e.getFieldErrors()) {
-            validationMessage.append(fieldError.getDefaultMessage()).append("\n");
-        }
-        return new ResponseEntity(validationMessage.toString(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity handle(Exception e) {
-        String message = null;
-        try {
-            message = messageSource.getMessage(e.getMessage(), new Object[]{}, new Locale("en"));
-        } catch (NoSuchMessageException noSuchMessageException) {
-            message = e.getMessage();
-        }
-
-        log.warn(message);
-        return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
-    }
-
 }
