@@ -12,5 +12,6 @@ public class RentalDto {
     Integer userId;
     @NotNull(message = "{rental.vhsId.notNull}")
     Integer vhsId;
+    @NotNull(message = "{rental.dueDate.notNull}")
     LocalDateTime dueDate;
 }
