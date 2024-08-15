@@ -35,7 +35,7 @@ public class RentalService {
 
     public Integer updateRental(RentalDto rentalDto) {
         if (rentalDto.getId() == null) {
-            throw new IllegalStateException("Rental id must not be null");
+            throw new IllegalStateException("update.id.null");
         } else {
             Rental rental = RentalMapper.MAPPER.toModel(rentalDto);
             rental = rentalRepository.save(rental);
@@ -45,7 +45,7 @@ public class RentalService {
 
     public boolean deleteRental(Integer rentalId) {
         if (rentalId == null) {
-            throw new IllegalStateException("Rental id must not be null");
+            throw new IllegalStateException("delete.id.null");
         } else {
             rentalRepository.deleteById(rentalId);
             return true;

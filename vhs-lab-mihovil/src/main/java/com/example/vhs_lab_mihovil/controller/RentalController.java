@@ -5,6 +5,8 @@ import com.example.vhs_lab_mihovil.service.RentalService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -12,16 +14,19 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 
 @Slf4j
 @RestController
 @RequestMapping("/api/rental")
 public class RentalController {
     private RentalService rentalService;
+    private MessageSource messageSource;
 
     @Autowired
-    public RentalController(RentalService rentalService) {
+    public RentalController(RentalService rentalService, MessageSource messageSource) {
         this.rentalService = rentalService;
+        this.messageSource = messageSource;
     }
 
     @GetMapping("getAll")
@@ -61,8 +66,15 @@ public class RentalController {
 
     @ExceptionHandler
     public ResponseEntity handle(Exception e) {
-        log.warn(e.getMessage());
-        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        String message = null;
+        try {
+            message = messageSource.getMessage(e.getMessage(), new Object[]{}, new Locale("en"));
+        } catch (NoSuchMessageException noSuchMessageException) {
+            message = e.getMessage();
+        }
+
+        log.warn(message);
+        return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
     }
 
 }
