@@ -27,4 +27,30 @@ public class VhsService {
                 .collect(Collectors.toList());
         return vhsDtoList;
     }
+
+    public Integer insertVhs(VhsDto vhsDto) {
+        Vhs vhs = VhsMapper.MAPPER.toModel(vhsDto);
+        vhs = vhsRepository.save(vhs);
+        return vhs.getId();
+    }
+
+    public Integer updateVhs(VhsDto vhsDto) {
+        if (vhsDto.getId() == null) {
+            return null;
+        } else {
+            Vhs vhs = VhsMapper.MAPPER.toModel(vhsDto);
+            vhs = vhsRepository.save(vhs);
+            return vhs.getId();
+        }
+
+    }
+
+    public boolean deleteVhs(Integer vhsId) {
+        if (vhsId == null) {
+            return false;
+        } else {
+            vhsRepository.deleteById(vhsId);
+            return true;
+        }
+    }
 }

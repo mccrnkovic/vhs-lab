@@ -38,7 +38,7 @@ public class RentalService {
             throw new IllegalStateException("Rental id must not be null");
         } else {
             Rental rental = RentalMapper.MAPPER.toModel(rentalDto);
-            rentalRepository.save(rental);
+            rental = rentalRepository.save(rental);
             return rental.getId();
         }
     }

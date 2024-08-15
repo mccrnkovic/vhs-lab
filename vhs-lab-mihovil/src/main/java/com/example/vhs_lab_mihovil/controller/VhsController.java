@@ -3,9 +3,9 @@ package com.example.vhs_lab_mihovil.controller;
 import com.example.vhs_lab_mihovil.dto.VhsDto;
 import com.example.vhs_lab_mihovil.service.VhsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,9 +19,28 @@ public class VhsController {
         this.vhsService = vhsService;
     }
 
-    @GetMapping("getAll")
-    public List<VhsDto> getAllVhs() {
+    @GetMapping("getAllVhs")
+    public ResponseEntity getAllVhs() {
         List<VhsDto> result = vhsService.getAllVhs();
-        return result;
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    @PostMapping("insertVhs")
+    public ResponseEntity insertVhs(@RequestBody VhsDto vhsDto) {
+        Integer insertedId = vhsService.insertVhs(vhsDto);
+        vhsDto.setId(insertedId);
+        return new ResponseEntity<>(vhsDto, HttpStatus.OK);
+    }
+
+    @PutMapping("updateVhs")
+    public ResponseEntity updateVhs(@RequestBody VhsDto vhsDto) {
+        Integer updatedId = vhsService.updateVhs(vhsDto);
+        return new ResponseEntity(updatedId, HttpStatus.OK);
+    }
+
+    @DeleteMapping("deleteVhs")
+    public ResponseEntity deleteVhs(@RequestParam Integer vhsId) {
+        boolean deleted = vhsService.deleteVhs(vhsId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
