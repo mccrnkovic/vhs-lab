@@ -7,6 +7,7 @@ import com.example.vhs_lab_mihovil.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,7 @@ public class RentalService {
 
     public Integer insertRental(RentalDto rentalDto) {
         Rental rental = RentalMapper.MAPPER.toModel(rentalDto);
+        rental.setStartDate(LocalDateTime.now());
         rentalRepository.save(rental);
         return rental.getId();
     }
