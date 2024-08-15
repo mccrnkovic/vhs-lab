@@ -36,7 +36,7 @@ public class VhsService {
 
     public Integer updateVhs(VhsDto vhsDto) {
         if (vhsDto.getId() == null) {
-            return null;
+            throw new IllegalStateException("update.id.null");
         } else {
             Vhs vhs = VhsMapper.MAPPER.toModel(vhsDto);
             vhs = vhsRepository.save(vhs);
@@ -47,7 +47,7 @@ public class VhsService {
 
     public boolean deleteVhs(Integer vhsId) {
         if (vhsId == null) {
-            return false;
+            throw new IllegalStateException("update.id.null");
         } else {
             vhsRepository.deleteById(vhsId);
             return true;
