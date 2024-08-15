@@ -56,7 +56,7 @@ public class RentalController {
         for (FieldError fieldError : e.getFieldErrors()) {
             validationMessage.append(fieldError.getDefaultMessage()).append("\n");
         }
-        return new ResponseEntity(validationMessage.toString(), HttpStatus.NO_CONTENT);
+        return new ResponseEntity(validationMessage.toString(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler

@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 @Data
 public class RentalDto {
     Integer id;
-    @NotNull(message = "userId must not be null")
+    @NotNull(message = "{rental.vhsId.notNull}")
     Integer userId;
-    @NotNull(message = "vhsId must not be null")
+    @NotNull(message = "{rental.userId.notNull}")
     Integer vhsId;
     LocalDateTime dueDate;
 }
