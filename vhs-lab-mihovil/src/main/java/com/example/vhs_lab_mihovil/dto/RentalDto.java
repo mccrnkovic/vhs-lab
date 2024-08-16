@@ -10,14 +10,13 @@ import java.time.LocalDateTime;
 @Data
 public class RentalDto {
     Integer id;
-    @NotNull(message = "{rental.userId.notNull}")
+    @NotNull(message = "{rental.userId}{notNullMsg}")
     Integer userId;
-    @NotNull(message = "{rental.vhsId.notNull}")
+    @NotNull(message = "{rental.vhsId}{notNullMsg}")
     Integer vhsId;
+    @NotNull(message = "{rental.startDate}{notNullMsg}")
     LocalDateTime startDate;
     LocalDateTime returnDate;
-    @NotNull(message = "{rental.dueDate.notNull}")
-    @Future(message = "{rental.dueDate.future}")
     LocalDateTime dueDate;
     BigDecimal rentAmount;
     BigDecimal feeAmount;
