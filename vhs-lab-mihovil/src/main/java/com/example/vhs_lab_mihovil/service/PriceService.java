@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +28,15 @@ public class PriceService {
                 .map(PriceMapper.MAPPER::toDto)
                 .collect(Collectors.toList());
         return priceDtos;
+    }
+
+    public Price getPriceByType(PriceType priceType){
+        Optional<Price> priceOptional = priceRepository.findById(priceType);
+        if (priceOptional.isPresent()) {
+            return priceOptional.get();
+        } else {
+            return null;
+        }
     }
 
     public PriceType updatePrice(PriceDto priceDto) {
