@@ -38,7 +38,7 @@ public class RentalController {
     @PostMapping("insertRental")
     public ResponseEntity insertRental(@Valid @RequestBody RentalDto rentalDto) {
         Integer insertedId = rentalService.insertRental(rentalDto);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(insertedId, HttpStatus.OK);
     }
 
     @PutMapping("updateRental")

@@ -6,6 +6,7 @@ import com.example.vhs_lab_mihovil.model.Rental;
 import com.example.vhs_lab_mihovil.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,7 +31,15 @@ public class RentalService {
 
     public Integer insertRental(RentalDto rentalDto) {
         Rental rental = RentalMapper.MAPPER.toModel(rentalDto);
-        rental.setStartDate(LocalDateTime.now());
+
+        if (rental.getStartDate() == null) {
+            rental.setStartDate(LocalDateTime.now());
+        }
+
+        if (rental.getDueDate() == null || rental.getDueDate().isBefore(rental.getStartDate())) {
+            rental.setDueDate(rental.getStartDate().plusDays(30));
+        }
+
         rentalRepository.save(rental);
         return rental.getId();
     }
