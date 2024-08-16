@@ -27,4 +27,23 @@ public class UserService {
                 .collect(Collectors.toList());
         return userDtos;
     }
+
+    public Integer insertUser(UserDto userDto) {
+        User user = UserMapper.MAPPER.toModel(userDto);
+        user = userRepository.save(user);
+        return user.getId();
+    }
+
+    public Integer updateUser(UserDto userDto) {
+        if (userDto.getId() == null) {
+            throw new IllegalStateException("update.id.null");
+        }
+        User user = UserMapper.MAPPER.toModel(userDto);
+        user = userRepository.save(user);
+        return user.getId();
+    }
+
+    public void deleteUser(Integer id) {
+        userRepository.deleteById(id);
+    }
 }
