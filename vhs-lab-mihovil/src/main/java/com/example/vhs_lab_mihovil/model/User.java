@@ -13,9 +13,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @NotNull
     String name;
+    @NotNull
     String surname;
+    @NotNull
     String username;
+    @NotNull
     String email;
     String phoneNumber;
 }
