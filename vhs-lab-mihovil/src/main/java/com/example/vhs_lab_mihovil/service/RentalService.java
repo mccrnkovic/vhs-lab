@@ -98,11 +98,11 @@ public class RentalService {
             return updatedRentalDto;
         } else {
             //No rental found
-            throw new NoDataFoundException(rentalRepository, rentalId);
+            throw new NoDataFoundException(rentalRepository, rentalId.toString());
         }
     }
 
-    private BigDecimal calculate(PriceType priceType, LocalDateTime startDate, LocalDateTime endDate) {
+    private BigDecimal calculate(PriceType priceType, LocalDateTime startDate, LocalDateTime endDate) throws NoDataFoundException {
         Price price = priceService.getPriceByType(priceType);
         Duration duration = Duration.between(startDate, endDate);
         long days = duration.plusDays(1).toDays();

@@ -5,10 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Data
 public class NoDataFoundException extends Exception {
-    private Integer id;
+    private String id;
     private String repositoryName;
 
-    public NoDataFoundException(JpaRepository repository, Integer id) {
+    public NoDataFoundException(JpaRepository repository, String id) {
         super("noDataFoundMsg"); // Will be processed by GenericExceptionHandler
         this.id = id;
         this.repositoryName = repository.getClass().getInterfaces()[0].getSimpleName();

@@ -1,6 +1,7 @@
 package com.example.vhs_lab_mihovil.service;
 
 import com.example.vhs_lab_mihovil.dto.PriceDto;
+import com.example.vhs_lab_mihovil.exception.NoDataFoundException;
 import com.example.vhs_lab_mihovil.mapper.PriceMapper;
 import com.example.vhs_lab_mihovil.model.Price;
 import com.example.vhs_lab_mihovil.model.PriceType;
@@ -30,12 +31,12 @@ public class PriceService {
         return priceDtos;
     }
 
-    public Price getPriceByType(PriceType priceType){
+    public Price getPriceByType(PriceType priceType) throws NoDataFoundException {
         Optional<Price> priceOptional = priceRepository.findById(priceType);
         if (priceOptional.isPresent()) {
             return priceOptional.get();
         } else {
-            return null;
+            throw new NoDataFoundException(priceRepository, priceType.name());
         }
     }
 
