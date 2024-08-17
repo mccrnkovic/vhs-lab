@@ -1,6 +1,7 @@
 package com.example.vhs_lab_mihovil.controller;
 
 import com.example.vhs_lab_mihovil.dto.RentalDto;
+import com.example.vhs_lab_mihovil.exception.NoDataFoundException;
 import com.example.vhs_lab_mihovil.service.RentalService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,12 @@ public class RentalController {
     public ResponseEntity insertRental(@Valid @RequestBody RentalDto rentalDto) {
         Integer insertedId = rentalService.insertRental(rentalDto);
         return new ResponseEntity(insertedId, HttpStatus.OK);
+    }
+
+    @PostMapping("return")
+    public ResponseEntity rentalReturn(@RequestParam Integer rentalId) throws NoDataFoundException {
+        RentalDto rentalDto = rentalService.rentalReturn(rentalId);
+        return new ResponseEntity(rentalDto, HttpStatus.OK);
     }
 
     @PutMapping("updateRental")

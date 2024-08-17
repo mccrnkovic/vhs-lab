@@ -1,4 +1,4 @@
-package com.example.vhs_lab_mihovil.controller;
+package com.example.vhs_lab_mihovil.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +32,18 @@ public class GlobalExceptionHandler {
             validationMessage.append(fieldError.getDefaultMessage()).append("\n");
         }
         return new ResponseEntity(validationMessage.toString(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler ResponseEntity handle(NoDataFoundException e) {
+        String message;
+        try {
+            message = messageSource.getMessage(e.getMessage(), new Object[]{e.getRepositoryName(), e.getId()}, new Locale(""));
+        } catch (NoSuchMessageException noSuchMessageException) {
+            message = e.getMessage();
+        }
+
+        log.warn(message);
+        return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
