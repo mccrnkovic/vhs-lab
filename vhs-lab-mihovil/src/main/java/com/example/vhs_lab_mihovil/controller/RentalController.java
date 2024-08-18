@@ -2,6 +2,7 @@ package com.example.vhs_lab_mihovil.controller;
 
 import com.example.vhs_lab_mihovil.dto.RentalDto;
 import com.example.vhs_lab_mihovil.exception.NoDataFoundException;
+import com.example.vhs_lab_mihovil.exception.VhsUnavailableException;
 import com.example.vhs_lab_mihovil.service.RentalService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ public class RentalController {
     }
 
     @PostMapping("insertRental")
-    public ResponseEntity insertRental(@Valid @RequestBody RentalDto rentalDto) {
+    public ResponseEntity insertRental(@Valid @RequestBody RentalDto rentalDto) throws NoDataFoundException, VhsUnavailableException {
         Integer insertedId = rentalService.insertRental(rentalDto);
         return new ResponseEntity(insertedId, HttpStatus.OK);
     }

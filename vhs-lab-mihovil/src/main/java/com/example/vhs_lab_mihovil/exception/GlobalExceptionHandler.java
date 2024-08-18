@@ -46,6 +46,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler ResponseEntity handle(VhsUnavailableException e) {
+        String message;
+        try {
+            message = messageSource.getMessage(e.getMessage(), new Object[]{e.getVhsId()}, new Locale(""));
+        } catch (NoSuchMessageException noSuchMessageException) {
+            message = e.getMessage();
+        }
+
+        log.warn(message);
+        return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler
     public ResponseEntity handle(Exception e) {
         String message = null;

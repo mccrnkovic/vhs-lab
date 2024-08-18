@@ -1,9 +1,10 @@
 package com.example.vhs_lab_mihovil.exception;
 
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-@Data
+@Getter
 public class NoDataFoundException extends Exception {
     private String id;
     private String repositoryName;

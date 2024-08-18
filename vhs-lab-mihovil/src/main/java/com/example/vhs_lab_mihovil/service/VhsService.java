@@ -1,14 +1,15 @@
 package com.example.vhs_lab_mihovil.service;
 
 import com.example.vhs_lab_mihovil.dto.VhsDto;
+import com.example.vhs_lab_mihovil.exception.NoDataFoundException;
 import com.example.vhs_lab_mihovil.mapper.VhsMapper;
 import com.example.vhs_lab_mihovil.model.Vhs;
 import com.example.vhs_lab_mihovil.repository.VhsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,5 +53,19 @@ public class VhsService {
             vhsRepository.deleteById(vhsId);
             return true;
         }
+    }
+
+    public Vhs getVhsById(Integer id) throws NoDataFoundException {
+        Optional<Vhs> optionalVhs = vhsRepository.findById(id);
+        if (optionalVhs.isPresent()) {
+            return optionalVhs.get();
+        } else {
+            throw new NoDataFoundException(vhsRepository, id.toString());
+        }
+    }
+
+    public int updateAvailability(Integer vhsId, Boolean available) {
+        int updated = vhsRepository.updateAvailability(vhsId, available);
+        return updated;
     }
 }

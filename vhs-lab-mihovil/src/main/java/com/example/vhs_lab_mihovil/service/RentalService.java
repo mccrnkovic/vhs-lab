@@ -2,33 +2,35 @@ package com.example.vhs_lab_mihovil.service;
 
 import com.example.vhs_lab_mihovil.dto.RentalDto;
 import com.example.vhs_lab_mihovil.exception.NoDataFoundException;
+import com.example.vhs_lab_mihovil.exception.VhsUnavailableException;
 import com.example.vhs_lab_mihovil.mapper.RentalMapper;
 import com.example.vhs_lab_mihovil.model.Price;
 import com.example.vhs_lab_mihovil.model.PriceType;
 import com.example.vhs_lab_mihovil.model.Rental;
+import com.example.vhs_lab_mihovil.model.Vhs;
 import com.example.vhs_lab_mihovil.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 public class RentalService {
     private RentalRepository rentalRepository;
     private PriceService priceService;
+    private VhsService vhsService;
 
     @Autowired
-    public RentalService(RentalRepository rentalRepository, PriceService priceService) {
+    public RentalService(RentalRepository rentalRepository, PriceService priceService, VhsService vhsService) {
         this.rentalRepository = rentalRepository;
         this.priceService = priceService;
+        this.vhsService = vhsService;
     }
 
     public List<RentalDto> getAllRentals() {
@@ -39,9 +41,14 @@ public class RentalService {
         return rentalDtos;
     }
 
-    public Integer insertRental(RentalDto rentalDto) {
-        Rental rental = RentalMapper.MAPPER.toModel(rentalDto);
+    @Transactional
+    public Integer insertRental(RentalDto rentalDto) throws NoDataFoundException, VhsUnavailableException {
+        Vhs vhs = vhsService.getVhsById(rentalDto.getVhsId());
+        if (!vhs.getAvailable()) {
+            throw new VhsUnavailableException(vhs.getId().toString());
+        }
 
+        Rental rental = RentalMapper.MAPPER.toModel(rentalDto);
         if (rental.getStartDate() == null) {
             rental.setStartDate(LocalDateTime.now());
         }
@@ -50,7 +57,11 @@ public class RentalService {
             rental.setDueDate(rental.getStartDate().plusDays(30));
         }
 
-        rentalRepository.save(rental);
+        rental = rentalRepository.save(rental);
+        if (rental.getId() != null) {
+            vhsService.updateAvailability(rental.getVhs().getId(), false);
+        }
+
         return rental.getId();
     }
 
@@ -73,6 +84,7 @@ public class RentalService {
         }
     }
 
+    @Transactional
     public RentalDto rentalReturn(Integer rentalId) throws NoDataFoundException {
         Optional<Rental> rentalOptional = rentalRepository.findById(rentalId);
         if (rentalOptional.isPresent()){
@@ -93,6 +105,8 @@ public class RentalService {
 
             rental.setReturnDate(returnDate);
             rental = rentalRepository.save(rental);
+
+            vhsService.updateAvailability(rental.getVhs().getId(), true);
 
             RentalDto updatedRentalDto = RentalMapper.MAPPER.toDto(rental);
             return updatedRentalDto;
