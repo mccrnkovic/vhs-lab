@@ -43,7 +43,7 @@ public class RentalService {
     }
 
     @Transactional
-    public Integer insertRental(RentalDto rentalDto) throws NoDataFoundException, VhsUnavailableException {
+    public RentalDto insertRental(RentalDto rentalDto) throws NoDataFoundException, VhsUnavailableException {
         Vhs vhs = vhsService.getVhsById(rentalDto.getVhsId());
         if (!vhs.getAvailable()) {
             throw new VhsUnavailableException(vhs.getId().toString());
@@ -63,16 +63,19 @@ public class RentalService {
             vhsService.updateAvailability(rental.getVhs().getId(), false);
         }
 
-        return rental.getId();
+        RentalDto newRentalDto = RentalMapper.MAPPER.toDto(rental);
+        return newRentalDto;
     }
 
-    public Integer updateRental(RentalDto rentalDto) {
+    @Transactional
+    public RentalDto updateRental(RentalDto rentalDto) {
         if (rentalDto.getId() == null) {
             throw new IllegalStateException("update.id.null");
         } else {
             Rental rental = RentalMapper.MAPPER.toModel(rentalDto);
             rental = rentalRepository.save(rental);
-            return rental.getId();
+            RentalDto updatedRentalDto = RentalMapper.MAPPER.toDto(rental);
+            return updatedRentalDto;
         }
     }
 

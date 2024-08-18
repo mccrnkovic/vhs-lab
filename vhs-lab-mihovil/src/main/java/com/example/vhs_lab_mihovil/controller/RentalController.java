@@ -40,8 +40,8 @@ public class RentalController {
 
     @PostMapping("insertRental")
     public ResponseEntity insertRental(@Valid @RequestBody RentalDto rentalDto) throws NoDataFoundException, VhsUnavailableException {
-        Integer insertedId = rentalService.insertRental(rentalDto);
-        return new ResponseEntity(insertedId, HttpStatus.OK);
+        RentalDto newRentalDto = rentalService.insertRental(rentalDto);
+        return new ResponseEntity(newRentalDto, HttpStatus.OK);
     }
 
     @PostMapping("return")
@@ -52,8 +52,8 @@ public class RentalController {
 
     @PutMapping("updateRental")
     public ResponseEntity updateRental(@Valid @RequestBody RentalDto rentalDto) {
-        Integer updatedId = rentalService.updateRental(rentalDto);
-        return new ResponseEntity(HttpStatus.ACCEPTED);
+        RentalDto updatedRentalDto = rentalService.updateRental(rentalDto);
+        return new ResponseEntity(updatedRentalDto, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("deleteRental")
