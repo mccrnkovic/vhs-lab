@@ -42,6 +42,16 @@ public class RentalService {
         return rentalDtos;
     }
 
+    private Rental getRentalById(Integer id) throws NoDataFoundException {
+        Optional<Rental> optionalRental = rentalRepository.findById(id);
+        if (optionalRental.isPresent()) {
+            return optionalRental.get();
+        } else {
+            throw new NoDataFoundException(rentalRepository, id.toString());
+        }
+
+    }
+
     @Transactional
     public RentalDto insertRental(RentalDto rentalDto) throws NoDataFoundException, VhsUnavailableException {
         Vhs vhs = vhsService.getVhsById(rentalDto.getVhsId());
@@ -68,13 +78,16 @@ public class RentalService {
     }
 
     @Transactional
-    public RentalDto updateRental(RentalDto rentalDto) {
+    public RentalDto updateRental(RentalDto rentalDto) throws NoDataFoundException {
         if (rentalDto.getId() == null) {
             throw new IllegalStateException("update.id.null");
         } else {
-            Rental rental = RentalMapper.MAPPER.toModel(rentalDto);
-            rental = rentalRepository.save(rental);
-            RentalDto updatedRentalDto = RentalMapper.MAPPER.toDto(rental);
+            Rental rental = getRentalById(rentalDto.getId());
+            Rental newRental = RentalMapper.MAPPER.toModel(rentalDto);
+            newRental.setVhs(rental.getVhs());
+
+            newRental = rentalRepository.save(newRental);
+            RentalDto updatedRentalDto = RentalMapper.MAPPER.toDto(newRental);
             return updatedRentalDto;
         }
     }

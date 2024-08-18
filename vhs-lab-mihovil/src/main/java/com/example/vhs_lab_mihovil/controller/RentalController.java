@@ -51,7 +51,7 @@ public class RentalController {
     }
 
     @PutMapping("updateRental")
-    public ResponseEntity updateRental(@Valid @RequestBody RentalDto rentalDto) {
+    public ResponseEntity updateRental(@Valid @RequestBody RentalDto rentalDto) throws NoDataFoundException {
         RentalDto updatedRentalDto = rentalService.updateRental(rentalDto);
         return new ResponseEntity(updatedRentalDto, HttpStatus.ACCEPTED);
     }
