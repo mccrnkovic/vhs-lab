@@ -34,6 +34,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity(validationMessage.toString(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler ResponseEntity handle(NotDeletedException e) {
+        String message;
+        try {
+            message = messageSource.getMessage(e.getMessage(), new Object[]{e.getRepositoryName(), e.getId()}, new Locale(""));
+        } catch (NoSuchMessageException noSuchMessageException) {
+            message = e.getMessage();
+        }
+
+        log.warn(message);
+        return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler ResponseEntity handle(NoDataFoundException e) {
         String message;
         try {

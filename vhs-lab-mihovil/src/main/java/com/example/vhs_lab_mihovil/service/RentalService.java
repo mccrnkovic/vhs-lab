@@ -2,6 +2,7 @@ package com.example.vhs_lab_mihovil.service;
 
 import com.example.vhs_lab_mihovil.dto.RentalDto;
 import com.example.vhs_lab_mihovil.exception.NoDataFoundException;
+import com.example.vhs_lab_mihovil.exception.NotDeletedException;
 import com.example.vhs_lab_mihovil.exception.VhsUnavailableException;
 import com.example.vhs_lab_mihovil.mapper.RentalMapper;
 import com.example.vhs_lab_mihovil.model.Price;
@@ -75,11 +76,15 @@ public class RentalService {
         }
     }
 
-    public boolean deleteRental(Integer rentalId) {
+    @Transactional
+    public boolean deleteRental(Integer rentalId) throws NotDeletedException {
         if (rentalId == null) {
             throw new IllegalStateException("delete.id.null");
         } else {
-            rentalRepository.deleteById(rentalId);
+            int deleted = rentalRepository.deleteRentalById(rentalId);
+            if (deleted == 0) {
+                throw new NotDeletedException(rentalRepository, rentalId.toString());
+            }
             return true;
         }
     }

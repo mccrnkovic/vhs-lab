@@ -2,6 +2,7 @@ package com.example.vhs_lab_mihovil.controller;
 
 import com.example.vhs_lab_mihovil.dto.RentalDto;
 import com.example.vhs_lab_mihovil.exception.NoDataFoundException;
+import com.example.vhs_lab_mihovil.exception.NotDeletedException;
 import com.example.vhs_lab_mihovil.exception.VhsUnavailableException;
 import com.example.vhs_lab_mihovil.service.RentalService;
 import jakarta.validation.Valid;
@@ -56,7 +57,7 @@ public class RentalController {
     }
 
     @DeleteMapping("deleteRental")
-    public ResponseEntity deleteRental(@RequestParam Integer rentalId) {
+    public ResponseEntity deleteRental(@RequestParam Integer rentalId) throws NotDeletedException {
         rentalService.deleteRental(rentalId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
