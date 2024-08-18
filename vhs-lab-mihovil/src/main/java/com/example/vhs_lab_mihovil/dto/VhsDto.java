@@ -8,4 +8,5 @@ public class VhsDto {
     String title;
     String publisher;
     Integer year;
+    Boolean available;
 }

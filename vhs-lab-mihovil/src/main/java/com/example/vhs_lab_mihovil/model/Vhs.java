@@ -15,4 +15,5 @@ public class Vhs {
     String title;
     String publisher;
     Integer year;
+    Boolean available;
 }
