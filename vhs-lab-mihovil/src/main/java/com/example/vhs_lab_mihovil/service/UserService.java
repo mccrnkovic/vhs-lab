@@ -1,11 +1,13 @@
 package com.example.vhs_lab_mihovil.service;
 
 import com.example.vhs_lab_mihovil.dto.UserDto;
+import com.example.vhs_lab_mihovil.exception.NotDeletedException;
 import com.example.vhs_lab_mihovil.mapper.UserMapper;
 import com.example.vhs_lab_mihovil.model.User;
 import com.example.vhs_lab_mihovil.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,22 +30,34 @@ public class UserService {
         return userDtos;
     }
 
-    public Integer insertUser(UserDto userDto) {
+    @Transactional
+    public UserDto insertUser(UserDto userDto) {
         User user = UserMapper.MAPPER.toModel(userDto);
         user = userRepository.save(user);
-        return user.getId();
+
+        UserDto newUserDto = UserMapper.MAPPER.toDto(user);
+        return newUserDto;
     }
 
-    public Integer updateUser(UserDto userDto) {
+    @Transactional
+    public UserDto updateUser(UserDto userDto) {
         if (userDto.getId() == null) {
             throw new IllegalStateException("update.id.null");
         }
+
         User user = UserMapper.MAPPER.toModel(userDto);
         user = userRepository.save(user);
-        return user.getId();
+
+        UserDto newUserDto = UserMapper.MAPPER.toDto(user);
+        return newUserDto;
     }
 
-    public void deleteUser(Integer id) {
-        userRepository.deleteById(id);
+    @Transactional
+    public boolean deleteUser(Integer id) throws NotDeletedException {
+        int deleted = userRepository.deleteUserById(id);
+        if (deleted == 0) {
+            throw new NotDeletedException(userRepository, id.toString());
+        }
+        return true;
     }
 }

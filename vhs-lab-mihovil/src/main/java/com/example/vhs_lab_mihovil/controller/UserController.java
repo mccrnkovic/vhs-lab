@@ -1,6 +1,7 @@
 package com.example.vhs_lab_mihovil.controller;
 
 import com.example.vhs_lab_mihovil.dto.UserDto;
+import com.example.vhs_lab_mihovil.exception.NotDeletedException;
 import com.example.vhs_lab_mihovil.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,18 +30,18 @@ public class UserController {
 
     @PostMapping("insert")
     public ResponseEntity insertUser(@Valid @RequestBody UserDto userDto){
-       Integer insertedId = userService.insertUser(userDto);
-       return new ResponseEntity(insertedId, HttpStatus.OK);
+       UserDto newUserDto = userService.insertUser(userDto);
+       return new ResponseEntity(newUserDto, HttpStatus.OK);
     }
 
     @PutMapping("update")
     public ResponseEntity updateUser(@RequestBody UserDto userDto){
-        Integer updatedId = userService.updateUser(userDto);
-        return new ResponseEntity(updatedId, HttpStatus.ACCEPTED);
+        UserDto newUserDto = userService.updateUser(userDto);
+        return new ResponseEntity(newUserDto, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("delete")
-    public ResponseEntity deleteUser(@RequestParam Integer id) {
+    public ResponseEntity deleteUser(@RequestParam Integer id) throws NotDeletedException {
         userService.deleteUser(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
