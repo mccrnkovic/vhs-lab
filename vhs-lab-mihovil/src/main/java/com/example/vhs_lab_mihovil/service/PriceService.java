@@ -8,6 +8,7 @@ import com.example.vhs_lab_mihovil.model.PriceType;
 import com.example.vhs_lab_mihovil.repository.PriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,12 +41,15 @@ public class PriceService {
         }
     }
 
-    public PriceType updatePrice(PriceDto priceDto) {
+    @Transactional
+    public PriceDto updatePrice(PriceDto priceDto) {
         if (priceDto.getId() == null) {
             throw new IllegalStateException("update.id.null");
         }
         Price price = PriceMapper.MAPPER.toModel(priceDto);
-        priceRepository.save(price);
-        return price.getId();
+        price = priceRepository.save(price);
+
+        PriceDto newPriceDto = PriceMapper.MAPPER.toDto(price);
+        return priceDto;
     }
 }

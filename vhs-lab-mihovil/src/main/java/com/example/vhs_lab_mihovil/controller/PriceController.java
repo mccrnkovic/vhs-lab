@@ -29,8 +29,8 @@ public class PriceController {
 
     @PutMapping("update")
     public ResponseEntity updatePrice(@RequestBody PriceDto priceDto){
-        PriceType updatedId = priceService.updatePrice(priceDto);
-        return new ResponseEntity(updatedId, HttpStatus.ACCEPTED);
+        PriceDto newPriceDto = priceService.updatePrice(priceDto);
+        return new ResponseEntity(newPriceDto, HttpStatus.ACCEPTED);
     }
 
 }
