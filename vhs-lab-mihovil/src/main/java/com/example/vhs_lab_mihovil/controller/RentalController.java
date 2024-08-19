@@ -38,7 +38,7 @@ public class RentalController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
-    @PostMapping("insertRental")
+    @PostMapping("insert")
     public ResponseEntity insertRental(@Valid @RequestBody RentalDto rentalDto) throws NoDataFoundException, VhsUnavailableException {
         RentalDto newRentalDto = rentalService.insertRental(rentalDto);
         return new ResponseEntity(newRentalDto, HttpStatus.OK);
@@ -50,13 +50,13 @@ public class RentalController {
         return new ResponseEntity(rentalDto, HttpStatus.OK);
     }
 
-    @PutMapping("updateRental")
+    @PutMapping("update")
     public ResponseEntity updateRental(@Valid @RequestBody RentalDto rentalDto) throws NoDataFoundException {
         RentalDto updatedRentalDto = rentalService.updateRental(rentalDto);
         return new ResponseEntity(updatedRentalDto, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("deleteRental")
+    @DeleteMapping("delete")
     public ResponseEntity deleteRental(@RequestParam Integer rentalId) throws NotDeletedException {
         rentalService.deleteRental(rentalId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);

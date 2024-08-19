@@ -21,25 +21,25 @@ public class VhsController {
         this.vhsService = vhsService;
     }
 
-    @GetMapping("getAllVhs")
+    @GetMapping("getAll")
     public ResponseEntity getAllVhs() {
         List<VhsDto> result = vhsService.getAllVhs();
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
-    @PostMapping("insertVhs")
+    @PostMapping("insert")
     public ResponseEntity insertVhs(@Valid @RequestBody VhsDto vhsDto) {
         VhsDto newVhsDto = vhsService.insertVhs(vhsDto);
         return new ResponseEntity<>(newVhsDto, HttpStatus.OK);
     }
 
-    @PutMapping("updateVhs")
+    @PutMapping("update")
     public ResponseEntity updateVhs(@Valid @RequestBody VhsDto vhsDto) {
         VhsDto newVhsDto = vhsService.updateVhs(vhsDto);
         return new ResponseEntity(newVhsDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("deleteVhs")
+    @DeleteMapping("delete")
     public ResponseEntity deleteVhs(@RequestParam Integer vhsId) throws NotDeletedException {
         boolean deleted = vhsService.deleteVhs(vhsId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
