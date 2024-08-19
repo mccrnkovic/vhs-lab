@@ -11,6 +11,6 @@ public class VhsDto {
     @NotNull
     String publisher;
     Integer year;
-    @NotNull(message = "{vhs.available}{notNull}")
+    @NotNull(message = "{notNullMsg}")
     Boolean available;
 }

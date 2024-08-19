@@ -29,7 +29,8 @@ public class GlobalExceptionHandler {
         log.warn(e.getMessage());
         StringBuilder validationMessage = new StringBuilder();
         for (FieldError fieldError : e.getFieldErrors()) {
-            validationMessage.append(fieldError.getDefaultMessage()).append("\n");
+            validationMessage.append(fieldError.getField()).append(" ")
+                    .append(fieldError.getDefaultMessage()).append("\n");
         }
         return new ResponseEntity(validationMessage.toString(), HttpStatus.BAD_REQUEST);
     }

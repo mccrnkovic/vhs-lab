@@ -21,8 +21,8 @@ public class Rental {
     @NotNull
     LocalDateTime startDate;
     LocalDateTime returnDate;
-    @NotNull(message = "{rental.dueDate}{notNullMsg}")
-    @Future(message = "{rental.dueDate}{futureDateMsg}")
+    @NotNull(message = "{notNullMsg}")
+    @Future(message = "{futureDateMsg}")
     LocalDateTime dueDate;
     BigDecimal rentAmount;
     BigDecimal feeAmount;

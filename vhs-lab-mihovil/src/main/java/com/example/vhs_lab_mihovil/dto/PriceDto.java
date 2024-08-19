@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 
 @Data
 public class PriceDto {
-    @NotNull(message = "{price.type.notNull}")
+    @NotNull(message = "{notNullMsg}")
     PriceType id;
-    @NotNull(message = "{price.amount.notNull}")
+    @NotNull(message = "{notNullMsg}")
     BigDecimal amount;
 }

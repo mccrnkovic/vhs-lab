@@ -28,13 +28,13 @@ public class VhsController {
     }
 
     @PostMapping("insertVhs")
-    public ResponseEntity insertVhs(@RequestBody VhsDto vhsDto) {
+    public ResponseEntity insertVhs(@Valid @RequestBody VhsDto vhsDto) {
         VhsDto newVhsDto = vhsService.insertVhs(vhsDto);
         return new ResponseEntity<>(newVhsDto, HttpStatus.OK);
     }
 
     @PutMapping("updateVhs")
-    public ResponseEntity updateVhs(@RequestBody VhsDto vhsDto) {
+    public ResponseEntity updateVhs(@Valid @RequestBody VhsDto vhsDto) {
         VhsDto newVhsDto = vhsService.updateVhs(vhsDto);
         return new ResponseEntity(newVhsDto, HttpStatus.OK);
     }

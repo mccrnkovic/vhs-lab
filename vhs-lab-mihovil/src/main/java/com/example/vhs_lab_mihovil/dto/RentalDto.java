@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @Data
 public class RentalDto {
     Integer id;
-    @NotNull(message = "{rental.userId}{notNullMsg}")
+    @NotNull(message = "{notNullMsg}")
     Integer userId;
-    @NotNull(message = "{rental.vhsId}{notNullMsg}")
+    @NotNull(message = "{notNullMsg}")
     Integer vhsId;
     LocalDateTime startDate;
     LocalDateTime returnDate;
