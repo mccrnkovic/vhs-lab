@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +65,7 @@ public class RentalService {
             rental.setStartDate(LocalDateTime.now());
         }
 
-        if (rental.getDueDate() == null || rental.getDueDate().isBefore(rental.getStartDate())) {
+        if (rental.getDueDate() == null || LocalDate.from(rental.getDueDate()).isBefore(LocalDate.from(rental.getStartDate()))) {
             rental.setDueDate(rental.getStartDate().plusDays(30));
         }
 
@@ -112,7 +113,7 @@ public class RentalService {
             Rental rental = rentalOptional.get();
             LocalDateTime returnDate = LocalDateTime.now();
 
-            if (returnDate.isAfter(rental.getDueDate())){
+            if (LocalDate.from(returnDate).isAfter(LocalDate.from(rental.getDueDate()))){
                 BigDecimal feeAmount = calculate(PriceType.FEE_PER_DAY, rental.getDueDate(), returnDate);
                 rental.setFeeAmount(feeAmount);
 
