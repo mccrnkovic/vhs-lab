@@ -1,7 +1,9 @@
 package com.example.vhs_lab_mihovil.controller;
 
 import com.example.vhs_lab_mihovil.dto.VhsDto;
+import com.example.vhs_lab_mihovil.exception.NotDeletedException;
 import com.example.vhs_lab_mihovil.service.VhsService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,19 +29,18 @@ public class VhsController {
 
     @PostMapping("insertVhs")
     public ResponseEntity insertVhs(@RequestBody VhsDto vhsDto) {
-        Integer insertedId = vhsService.insertVhs(vhsDto);
-        vhsDto.setId(insertedId);
-        return new ResponseEntity<>(vhsDto, HttpStatus.OK);
+        VhsDto newVhsDto = vhsService.insertVhs(vhsDto);
+        return new ResponseEntity<>(newVhsDto, HttpStatus.OK);
     }
 
     @PutMapping("updateVhs")
     public ResponseEntity updateVhs(@RequestBody VhsDto vhsDto) {
-        Integer updatedId = vhsService.updateVhs(vhsDto);
-        return new ResponseEntity(updatedId, HttpStatus.OK);
+        VhsDto newVhsDto = vhsService.updateVhs(vhsDto);
+        return new ResponseEntity(newVhsDto, HttpStatus.OK);
     }
 
     @DeleteMapping("deleteVhs")
-    public ResponseEntity deleteVhs(@RequestParam Integer vhsId) {
+    public ResponseEntity deleteVhs(@RequestParam Integer vhsId) throws NotDeletedException {
         boolean deleted = vhsService.deleteVhs(vhsId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

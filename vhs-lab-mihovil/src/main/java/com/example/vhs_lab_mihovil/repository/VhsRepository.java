@@ -11,4 +11,8 @@ public interface VhsRepository extends JpaRepository<Vhs, Integer> {
     @Modifying
     @Query("UPDATE Vhs SET available = :available WHERE id = :vhsId")
     int updateAvailability(@Param("vhsId") Integer vhsId, @Param("available") Boolean available);
+
+    @Modifying
+    @Query("DELETE FROM Vhs WHERE id = :id")
+    int deleteVhsByid(@Param("id") Integer id);
 }

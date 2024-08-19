@@ -2,11 +2,13 @@ package com.example.vhs_lab_mihovil.service;
 
 import com.example.vhs_lab_mihovil.dto.VhsDto;
 import com.example.vhs_lab_mihovil.exception.NoDataFoundException;
+import com.example.vhs_lab_mihovil.exception.NotDeletedException;
 import com.example.vhs_lab_mihovil.mapper.VhsMapper;
 import com.example.vhs_lab_mihovil.model.Vhs;
 import com.example.vhs_lab_mihovil.repository.VhsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,30 +31,39 @@ public class VhsService {
         return vhsDtoList;
     }
 
-    public Integer insertVhs(VhsDto vhsDto) {
+    @Transactional
+    public VhsDto insertVhs(VhsDto vhsDto) {
         Vhs vhs = VhsMapper.MAPPER.toModel(vhsDto);
         vhs = vhsRepository.save(vhs);
-        return vhs.getId();
+
+        VhsDto newVhsDto = VhsMapper.MAPPER.toDto(vhs);
+        return newVhsDto;
     }
 
-    public Integer updateVhs(VhsDto vhsDto) {
+    @Transactional
+    public VhsDto updateVhs(VhsDto vhsDto) {
         if (vhsDto.getId() == null) {
             throw new IllegalStateException("update.id.null");
         } else {
             Vhs vhs = VhsMapper.MAPPER.toModel(vhsDto);
             vhs = vhsRepository.save(vhs);
-            return vhs.getId();
+
+            VhsDto newVhsDto = VhsMapper.MAPPER.toDto(vhs);
+            return newVhsDto;
         }
 
     }
 
-    public boolean deleteVhs(Integer vhsId) {
+    @Transactional
+    public boolean deleteVhs(Integer vhsId) throws NotDeletedException {
         if (vhsId == null) {
             throw new IllegalStateException("update.id.null");
-        } else {
-            vhsRepository.deleteById(vhsId);
-            return true;
         }
+        int deleted = vhsRepository.deleteVhsByid(vhsId);
+        if (deleted == 0) {
+            throw new NotDeletedException(vhsRepository, vhsId.toString());
+        }
+        return true;
     }
 
     public Vhs getVhsById(Integer id) throws NoDataFoundException {
@@ -64,6 +75,7 @@ public class VhsService {
         }
     }
 
+    @Transactional
     public int updateAvailability(Integer vhsId, Boolean available) {
         int updated = vhsRepository.updateAvailability(vhsId, available);
         return updated;
