@@ -80,6 +80,7 @@ public class GlobalExceptionHandler {
         }
 
         log.warn(message);
+        e.printStackTrace();
         return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
     }
 }
