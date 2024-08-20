@@ -24,8 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import static java.lang.Thread.sleep;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -62,14 +61,11 @@ public class RentalTest {
     @Test
     void vhsUnavailableTest() throws NoDataFoundException, VhsUnavailableException {
         RentalDto newRentalDto = createRentalDto(1, 2);
-        rentalController.insertRental(newRentalDto);
+        ResponseEntity response = rentalController.insertRental(newRentalDto);
+        RentalDto insertedRentalDto = (RentalDto) response.getBody();
 
-        try {
-            ResponseEntity rentalResponse = rentalController.insertRental(newRentalDto);
-            assertTrue(!rentalResponse.getStatusCode().equals(HttpStatus.OK));
-        } catch (VhsUnavailableException e) {
-            assertTrue(e.getVhsId().equals(newRentalDto.getVhsId().toString()));
-        }
+        VhsUnavailableException e = assertThrows(VhsUnavailableException.class, () -> rentalController.insertRental(newRentalDto));
+        assertTrue(e.getVhsId().equals(insertedRentalDto.getVhsId().toString()));
     }
 
     @Test
