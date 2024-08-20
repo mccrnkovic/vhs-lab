@@ -1,0 +1,143 @@
+{
+	"info": {
+		"_postman_id": "eef4e0eb-a4d2-4bfe-aefb-583b0287dab5",
+		"name": "vhs-lab-crnkovic",
+		"description": "Set up for testing APIs with application running on Docker - using port 2222. You can **change port** for testing **in the variables of the collection**.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20152659"
+	},
+	"item": [
+		{
+			"name": "VHS",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{vhsApi}}/getAll"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rental",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{rentalApi}}/getAll"
+					},
+					"response": []
+				},
+				{
+					"name": "Rent",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\": 1, \"vhsId\": 2, \"startDate\": \"2024-08-16T15:00:00\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{rentalApi}}/insert"
+					},
+					"response": []
+				},
+				{
+					"name": "Return",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{rentalApi}}/return?rentalId=1",
+							"host": [
+								"{{rentalApi}}"
+							],
+							"path": [
+								"return"
+							],
+							"query": [
+								{
+									"key": "rentalId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{userApi}}/getAll"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "port",
+			"value": "2222",
+			"type": "string"
+		},
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:{{port}}",
+			"type": "string"
+		},
+		{
+			"key": "vhsApi",
+			"value": "{{baseUrl}}/api/vhs",
+			"type": "string"
+		},
+		{
+			"key": "rentalApi",
+			"value": "{{baseUrl}}/api/rental",
+			"type": "string"
+		},
+		{
+			"key": "userApi",
+			"value": "{{baseUrl}}/api/user",
+			"type": "string"
+		}
+	]
+}
